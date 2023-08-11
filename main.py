@@ -1,12 +1,9 @@
-
-# * pipenv install python-telegram-bot==13.7
-# * pipenv install requests
-
+# pip install python-telegram-bot==13.7
 from requests import *
 from telegram import *
 from telegram.ext import *
 
-#! TOKEN = "6069762613:AAEf6C36OQl7j8-HqKmCt-FQdcyUT6P7l2s"   Alisher aka tg bot
+# TOKEN = "6069762613:AAEf6C36OQl7j8-HqKmCt-FQdcyUT6P7l2s"
 TOKEN = '6525859391:AAHrWn07p5LMBOJSP5wP-vC4-n1B4T4g8oA'
 
 RANDOM_IMAGE = "Random image"
@@ -26,7 +23,7 @@ print("Running up the bot...")
 # instead of the old deprecated ones.
 
 
-def start(update: Update, context: CallbackContext):
+def start(update, context):
     # SENDING HELLO MESSAGE
     # .reply_text(message, reply_markup=None, **kwargs)
     # update.message.reply_text("Hello there! I'm bot. Nice to see you!")
@@ -43,7 +40,7 @@ def _send_local_file(update, context):
         RU: Мы должны открыть файл в двоичном режиме,
         иначе Telegram не сможет обработать его правильно
     """
-    with open("//233644-Dota_2-Loading_screen.jpg", "rb") as f:
+    with open("./233644-Dota_2-Loading_screen.jpg", "rb") as f:
         """
                 update.message.reply_photo(photo, caption=None)
             photo   - Photo to send
@@ -53,7 +50,7 @@ def _send_local_file(update, context):
 
 
 def _send_mp3(update: Update, context: CallbackContext):
-    with open("music.mp3", "rb") as f:
+    with open("click.mp3", "rb") as f:
         update.message.reply_audio(f, caption="This is mp3")
 
 
@@ -94,7 +91,10 @@ def help(update, context):
 
 updater = Updater(TOKEN, use_context=True)
 dispatcher = updater.dispatcher
+dispatcher.add_handler(CommandHandler("start", start))
 dispatcher.add_handler(CommandHandler("help", help))
+dispatcher.add_handler(CommandHandler('buttons', get_buttons))
+dispatcher.add_handler(MessageHandler(Filters.text, message_handler))
 
 
 updater.start_polling()
